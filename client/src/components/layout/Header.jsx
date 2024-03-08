@@ -6,82 +6,121 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { orange } from "../constants/color";
-import MenuIcon from "@mui/icons-material/Menu";
-import { SearchSharp } from "@mui/icons-material";
-import AddIcon from "@mui/icons-material/Add";
-import GroupIcon from "@mui/icons-material/Group";
+import {
+  Menu,
+  SearchSharp,
+  Add,
+  Group,
+  Logout,
+  NotificationsActive,
+} from "@mui/icons-material";
+
+const SearchDialog = lazy(() => import("../specific/Search"));
+const NotifiactionDialog = lazy(() => import("../specific/Notification"));
+const Gropudialog = lazy(() => import("../specific/Newgroup"));
 import { useNavigate } from "react-router-dom";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { Layoutloader } from "./Loaders";
 
 const Header = () => {
   const navigate = useNavigate();
+
+  const [ismobile, setmobile] = useState(false);
+  const [issearch, setsearch] = useState(false);
+  const [isnewgroup, setnewgroup] = useState(false);
+  const [isnotification, setnotification] = useState(false);
+
   const handleMobile = () => {
-    console.log("mobile");
+    setmobile((prev) => !prev);
   };
   const openSearch = () => {
-    console.log("mobile");
+    setsearch((prev) => !prev);
   };
   const OpenNewGroup = () => {
-    console.log("mobile");
+    setnewgroup((prev) => !prev);
   };
   const LogoutHandler = () => {
     console.log("mobile");
   };
+  const opennotification = () => {
+    setnotification((prev) => !prev);
+  };
   const NavigateGroup = () => navigate("/groups");
   return (
-    <Box sx={{ flexGrow: 1 }} height={"4rem"}>
-      <AppBar
-        position="static"
-        sx={{
-          bgcolor: "#344955",
-        }}
-      >
-        <Toolbar>
-          <Typography
-            variant="h4"
-            sx={{
-              display: { xs: "none", sm: "block" },
-            }}
-          >
-            Chat App
-          </Typography>
-          <Box
-            sx={{
-              display: { xs: "block", sm: "none" },
-            }}
-          >
-            <IconButton color="inherit" onClick={handleMobile}>
-              <MenuIcon />
-            </IconButton>
-          </Box>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box>
-            <IconBtn
-              title={"Search"}
-              icon={<SearchSharp />}
-              onClick={openSearch}
-            />
-            <IconBtn
-              title={"New Group"}
-              icon={<AddIcon />}
-              onClick={OpenNewGroup}
-            />
-            <IconBtn
-              title={"Manage Group"}
-              icon={<GroupIcon />}
-              onClick={NavigateGroup}
-            />
-            <IconBtn
-              title={"Logout"}
-              icon={<LogoutIcon />}
-              onClick={LogoutHandler}
-            />
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <>
+      <Box sx={{ flexGrow: 1 }} height={"4rem"}>
+        <AppBar
+          position="static"
+          sx={{
+            bgcolor: "#344955",
+          }}
+        >
+          <Toolbar>
+            <Typography
+              variant="h4"
+              sx={{
+                display: { xs: "none", sm: "block" },
+              }}
+            >
+              Chat App
+            </Typography>
+            <Box
+              sx={{
+                display: { xs: "block", sm: "none" },
+              }}
+            >
+              <IconButton color="inherit" onClick={handleMobile}>
+                <Menu />
+              </IconButton>
+            </Box>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box>
+              <IconBtn
+                title={"Search"}
+                icon={<SearchSharp />}
+                onClick={openSearch}
+              />
+              <IconBtn
+                title={"New Group"}
+                icon={<Add />}
+                onClick={OpenNewGroup}
+              />
+              <IconBtn
+                title={"Manage Group"}
+                icon={<Group />}
+                onClick={NavigateGroup}
+              />
+              <IconBtn
+                title={"Notifications"}
+                icon={<NotificationsActive />}
+                onClick={opennotification}
+              />
+              <IconBtn
+                title={"Logout"}
+                icon={<Logout />}
+                onClick={LogoutHandler}
+              />
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      {issearch && (
+        <Suspense fallback={<Layoutloader/>}>
+          <SearchDialog />
+        </Suspense>
+      )}
+      {isnotification && (
+        <Suspense fallback={<Layoutloader/>}>
+          <NotifiactionDialog />
+        </Suspense>
+      )}
+      {isnewgroup && (
+        <Suspense fallback={<Layoutloader/>}>
+          <Gropudialog />
+        </Suspense>
+      )}
+    </>
   );
 };
 
