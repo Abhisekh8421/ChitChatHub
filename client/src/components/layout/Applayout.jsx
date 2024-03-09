@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./Header";
 import Title from "../shared/Title";
 import { Grid } from "@mui/material";
+import Chatlist from "../specific/Chatlist";
 
 const Applayout = () => (Wrappedcomponent) => {
   return (props) => {
@@ -19,7 +20,7 @@ const Applayout = () => (Wrappedcomponent) => {
             }}
             height={"100%"}
           >
-            chat section
+            <Chatlist chats={[1, 2, 3, 4, 5]} />
           </Grid>
           <Grid item xs={12} sm={8} md={5} lg={6} height={"100%"}>
             <Wrappedcomponent {...props} />

@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Backdrop,
   Box,
   IconButton,
   Toolbar,
@@ -105,18 +106,19 @@ const Header = () => {
           </Toolbar>
         </AppBar>
       </Box>
+      {/* it will show below the header  */}
       {issearch && (
-        <Suspense fallback={<Layoutloader/>}>
+        <Suspense fallback={<Backdrop open />}>
           <SearchDialog />
         </Suspense>
       )}
       {isnotification && (
-        <Suspense fallback={<Layoutloader/>}>
+        <Suspense fallback={<Backdrop open />}>
           <NotifiactionDialog />
         </Suspense>
       )}
       {isnewgroup && (
-        <Suspense fallback={<Layoutloader/>}>
+        <Suspense fallback={<Backdrop open />}>
           <Gropudialog />
         </Suspense>
       )}
