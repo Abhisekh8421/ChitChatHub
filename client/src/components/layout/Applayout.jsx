@@ -24,7 +24,7 @@ const Applayout = () => (Wrappedcomponent) => {
             <Chatlist
               chats={sampleChats}
               chatId={"1"}
-              newMessagesAlert={[{ chatId: "1", count: 4 }]}
+              newMessagesAlert={[{ chatId: "1", count: 6 }]}
               onlineUsers={["1", "2","3"]}
             />
           </Grid>
