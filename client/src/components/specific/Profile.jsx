@@ -1,10 +1,11 @@
 import {
   Face as FaceIcon,
   AlternateEmail as UsernameIcon,
-  CalendarMonth as calandarIcon,
+  CalendarMonth as CalendarIcon,
 } from "@mui/icons-material";
 import { Avatar, Stack, Typography } from "@mui/material";
 import React from "react";
+import moment from "moment";
 
 const Profile = () => {
   return (
@@ -29,9 +30,9 @@ const Profile = () => {
         Icon={<UsernameIcon />}
       />
       <ProfileCard
-        text={"Abhisekh"}
-        heading={"Hello Everyone"}
-        Icon={<calandarIcon />}
+        text={"joined"}
+        heading={moment("2024-02-23T00:00:00.000Z").fromNow()}
+        Icon={<CalendarIcon />}
       />
     </Stack>
   );
