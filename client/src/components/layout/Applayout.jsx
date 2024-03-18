@@ -45,6 +45,7 @@ const Applayout = () => (Wrappedcomponent) => {
             sx={{
               display: { xs: "none", md: "block" },
               backgroundColor: "black",
+              height: "85vh",
             }}
             height={"100%"}
           >

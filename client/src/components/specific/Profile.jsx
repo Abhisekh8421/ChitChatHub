@@ -18,6 +18,7 @@ const Profile = () => {
           marginBottom: "1rem",
           border: "5px solid white",
         }}
+        src="https://picsum.photos/seed/picsum/200/300"
       />
       <ProfileCard
         text={"Abhisekh"}
