@@ -42,12 +42,13 @@ const Applayout = () => (Wrappedcomponent) => {
             item
             md={4}
             lg={3}
+            height={"100%"}
             sx={{
               display: { xs: "none", md: "block" },
               backgroundColor: "black",
-              height: "85vh",
+
+              padding: "2rem",
             }}
-            height={"100%"}
           >
             <Profile />
           </Grid>
