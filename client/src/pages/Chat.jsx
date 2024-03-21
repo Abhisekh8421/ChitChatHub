@@ -3,9 +3,18 @@ import { IconButton, Stack } from "@mui/material";
 import React, { useRef } from "react";
 import { InputBox } from "../components/styles/StyledComponents";
 import Applayout from "../components/layout/Applayout";
+import FileMenu from "../components/dialogs/FileMenu";
+import { sampleMessage } from "../components/constants/Sampledata";
+import Messagecomponent from "../components/shared/Messagecomponent";
+
+const user = {
+  _id: "sddsddsf",
+  name: "Abhisekhsuru",
+};
 
 const Chat = () => {
   const containerRef = useRef(null);
+
   return (
     <>
       <Stack
@@ -19,7 +28,11 @@ const Chat = () => {
           overflowX: "hidden",
           overflowY: "auto",
         }}
-      ></Stack>
+      >
+        {sampleMessage.map((message) => (
+          <Messagecomponent message={message} user={user} />
+        ))}
+      </Stack>
 
       <form
         style={{
@@ -68,6 +81,7 @@ const Chat = () => {
           </IconButton>
         </Stack>
       </form>
+      <FileMenu />
     </>
   );
 };

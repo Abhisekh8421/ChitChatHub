@@ -19,7 +19,7 @@ import {
 } from "@mui/icons-material";
 
 const SearchDialog = lazy(() => import("../specific/Search"));
-const NotifiactionDialog = lazy(() => import("../specific/Notification"));
+const NotificationDialog = lazy(() => import("../specific/Notification"));
 const Gropudialog = lazy(() => import("../specific/Newgroup"));
 import { useNavigate } from "react-router-dom";
 import { Layoutloader } from "./Loaders";
@@ -114,7 +114,7 @@ const Header = () => {
       )}
       {isnotification && (
         <Suspense fallback={<Backdrop open />}>
-          <NotifiactionDialog />
+          <NotificationDialog />
         </Suspense>
       )}
       {isnewgroup && (
