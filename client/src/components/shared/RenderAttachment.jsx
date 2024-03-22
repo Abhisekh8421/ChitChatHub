@@ -1,13 +1,30 @@
 import React from "react";
+import { TransformImage } from "../../lib/features";
+import { FileOpen } from "@mui/icons-material";
 
 const RenderAttachment = ({ file, url }) => {
   switch (file) {
     case "video":
-      <video src={url} controls preload="none" width={"200px"} />;
-      break;
+      return <video src={url} controls preload="none" width={"200px"} />;
+
     case "image":
-      <img src={url} alt="attachment"  />;
-      break;
+      return (
+        <img
+          src={TransformImage(url, 200)}
+          alt="attachment"
+          width={"200px"}
+          height={"150px"}
+          style={{
+            objectFit: "contain",
+          }}
+        />
+      );
+
+    case "audio":
+      return <audio src={url} controls preload="none" />;
+
+    default:
+      return <FileOpen />;
   }
 };
 

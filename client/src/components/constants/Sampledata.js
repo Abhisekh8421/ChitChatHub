@@ -68,7 +68,7 @@ export const sampleMessage = [
     attachments: [
       {
         public_id: "attachment3_public_id",
-        url: "https://example.com/attachment3",
+        url: "UsersAbhisekhDownloadssample-boat-400x300.png",
       },
     ],
     content: "This is the second message content.",
@@ -84,7 +84,7 @@ export const sampleMessage = [
     attachments: [
       {
         public_id: "attachment1_public_id",
-        url: "https://example.com/attachment1",
+        url: "C:\Users\Abhisekh\Downloads\sample-boat-400x300.png",
       },
     ],
     content: "This is the first message content.",
@@ -100,7 +100,7 @@ export const sampleMessage = [
     attachments: [
       {
         public_id: "attachment2_public_id",
-        url: "https://example.com/attachment2",
+        url: "C:\Users\Abhisekh\Downloads\sample-boat-400x300.png",
       },
     ],
     content: "This is the second message content.",

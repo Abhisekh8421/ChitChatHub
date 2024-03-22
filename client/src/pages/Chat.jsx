@@ -29,8 +29,8 @@ const Chat = () => {
           overflowY: "auto",
         }}
       >
-        {sampleMessage.map((message) => (
-          <Messagecomponent message={message} user={user} />
+        {sampleMessage.map((message, index) => (
+          <Messagecomponent key={index} message={message} user={user} />
         ))}
       </Stack>
 
