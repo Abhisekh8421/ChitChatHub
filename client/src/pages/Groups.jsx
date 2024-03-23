@@ -1,15 +1,38 @@
-import { KeyboardBackspace } from "@mui/icons-material";
-import { Grid, IconButton, Tooltip } from "@mui/material";
-import React from "react";
+import { KeyboardBackspace, Menu } from "@mui/icons-material";
+import { Box, Drawer, Grid, IconButton, Tooltip } from "@mui/material";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Groups = () => {
+  const [IsMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const navigateBlack = () => {
     navigate("/");
   };
+  const handlemobile = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
+  const handlemobileclose = () => {
+    setIsMobileMenuOpen(false);
+  };
   const Iconbtns = (
     <>
+      <Box
+        sx={{
+          display: {
+            xs: "block",
+            position: "fixed",
+            right: "1rem",
+            top: "1rem",
+          },
+        }}
+      >
+        <Tooltip title="menu">
+          <IconButton onClick={handlemobile}>
+            <Menu />
+          </IconButton>
+        </Tooltip>
+      </Box>
       <Tooltip title="back">
         <IconButton
           sx={{
@@ -59,6 +82,8 @@ const Groups = () => {
         {" "}
         {Iconbtns}
       </Grid>
+      <Drawer open={IsMobileMenuOpen} onClose={handlemobileclose}></Drawer>
+      {/* //when true the dialog will open then onclose it will shut down */}
     </Grid>
   );
 };
