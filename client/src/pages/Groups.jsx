@@ -1,12 +1,23 @@
 import { KeyboardBackspace, Menu } from "@mui/icons-material";
-import { Box, Drawer, Grid, IconButton, Tooltip } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Box,
+  Drawer,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import React, { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "../components/styles/StyledComponents";
+import AvatarCard from "../components/shared/AvatarCard";
+import { sampleChats } from "../components/constants/Sampledata";
 
 const Groups = () => {
   const [IsMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const navigateBlack = () => {
+  const navigateBack = () => {
     navigate("/");
   };
   const handlemobile = () => {
@@ -45,7 +56,7 @@ const Groups = () => {
               bgcolor: "#1c1c1c",
             },
           }}
-          onClick={navigateBlack}
+          onClick={navigateBack}
         >
           <KeyboardBackspace />
         </IconButton>
@@ -65,7 +76,8 @@ const Groups = () => {
           bgcolor: "#D74B76",
         }}
       >
-        Groups list
+        <GroupList myGroups={sampleChats} />
+        {/* //grouplist */}
       </Grid>
       <Grid
         item
@@ -82,10 +94,52 @@ const Groups = () => {
         {" "}
         {Iconbtns}
       </Grid>
-      <Drawer open={IsMobileMenuOpen} onClose={handlemobileclose}></Drawer>
+      <Drawer
+        sx={{
+          display: {
+            xs: "block",
+            sm: "none",
+          },
+        }}
+        open={IsMobileMenuOpen}
+        onClose={handlemobileclose}
+      >
+        <GroupList w={"50vh"} myGroups={sampleChats} />
+      </Drawer>
       {/* //when true the dialog will open then onclose it will shut down */}
     </Grid>
   );
 };
+
+const GroupList = ({ chatId, w = "100%", myGroups = [] }) => (
+  <Stack>
+    {myGroups.length > 0 ? (
+      myGroups.map((group) => (
+        <GroupListItem chatId={chatId} group={group} key={group._id} />
+      ))
+    ) : (
+      <Typography textAlign={"center"} padding={"1rem"}>
+        NoGroups
+      </Typography>
+    )}
+  </Stack>
+);
+
+const GroupListItem = memo(({ group, chatId }) => {
+  const { name, avatar, _id } = group;
+  return (
+    <Link
+      to={`?group=${_id}`}
+      onClick={(e) => {
+        if (chatId == _id) e.preventDefault();
+      }}
+    >
+      <Stack direction={"row"} spacing={"1rem"} alignItems={"center"}>
+        <AvatarCard avatar={avatar} />
+        <Typography>{name}</Typography>
+      </Stack>
+    </Link>
+  );
+});
 
 export default Groups;
