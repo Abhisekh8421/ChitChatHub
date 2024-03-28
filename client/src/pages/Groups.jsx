@@ -125,6 +125,9 @@ const GroupList = ({ chatId, w = "100%", myGroups = [] }) => (
   </Stack>
 );
 
+
+
+
 const GroupListItem = memo(({ group, chatId }) => {
   const { name, avatar, _id } = group;
   return (
