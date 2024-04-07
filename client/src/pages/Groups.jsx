@@ -34,10 +34,13 @@ const Groups = () => {
   const navigateBack = () => {
     navigate("/");
   };
-  const confirmDeleteHandler = () => {
+  const openConfirmDeleteHandler = () => {
     setconfirmDeleteDialog(true);
   };
-  const confirmAddHandler = () => {};
+  const closeConfirmDeleteHandler = () => {
+    setconfirmDeleteDialog(false);
+  };
+  const openConfirmAddHandler = () => {};
   const handlemobile = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
@@ -143,7 +146,7 @@ const Groups = () => {
           color="error"
           variant="outlined"
           startIcon={<Delete />}
-          onClick={confirmDeleteHandler}
+          onClick={openConfirmDeleteHandler}
         >
           Delete Group
         </Button>
@@ -151,7 +154,7 @@ const Groups = () => {
           variant="contained"
           size="large"
           startIcon={<Add />}
-          onClick={confirmAddHandler}
+          onClick={openConfirmAddHandler}
         >
           Add Member
         </Button>
@@ -218,6 +221,8 @@ const Groups = () => {
           </>
         )}
       </Grid>
+
+      {confirmDeleteDialog && <>hi</>}
       <Drawer
         sx={{
           display: {
