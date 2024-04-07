@@ -1,4 +1,11 @@
-import { KeyboardBackspace, Menu } from "@mui/icons-material";
+import {
+  Add,
+  Delete,
+  Done,
+  Edit,
+  KeyboardBackspace,
+  Menu,
+} from "@mui/icons-material";
 import {
   Box,
   Drawer,
@@ -7,8 +14,10 @@ import {
   Stack,
   Tooltip,
   Typography,
+  TextField,
+  Button,
 } from "@mui/material";
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Link } from "../components/styles/StyledComponents";
 import AvatarCard from "../components/shared/AvatarCard";
@@ -17,16 +26,33 @@ import { sampleChats } from "../components/constants/Sampledata";
 const Groups = () => {
   const chatId = useSearchParams()[0].get("group");
   const [IsMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isedit, setisedit] = useState(false);
+  const [Groupname, setisGroupname] = useState("");
+  const [GroupnameUpdatedValue, setGroupnameUpdatedValue] = useState("");
+  const [confirmDeleteDialog, setconfirmDeleteDialog] = useState(false);
   const navigate = useNavigate();
   const navigateBack = () => {
     navigate("/");
   };
+  const confirmDeleteHandler = () => {
+    setconfirmDeleteDialog(true);
+  };
+  const confirmAddHandler = () => {};
   const handlemobile = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
   const handlemobileclose = () => {
     setIsMobileMenuOpen(false);
   };
+  useEffect(() => {
+    setGroupnameUpdatedValue(`Group Name ${chatId}`);
+    setisGroupname(`GroupName ${chatId}`);
+    return () => {
+      setGroupnameUpdatedValue("");
+      setisGroupname("");
+      setisedit(false);
+    };
+  }, [chatId]);
   const Iconbtns = (
     <>
       <Box
@@ -65,6 +91,73 @@ const Groups = () => {
     </>
   );
   console.log("chat id is ", chatId);
+  const groupName = (
+    <Stack
+      direction={"row"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      spacing={"1rem"}
+      padding={"2.2rem"}
+    >
+      {isedit ? (
+        <>
+          <TextField
+            id="outlined-basic"
+            label="Outlined"
+            variant="outlined"
+            value={GroupnameUpdatedValue}
+            onChange={(e) => setGroupnameUpdatedValue(e.target.value)}
+          />
+          <IconButton onClick={() => setisedit(false)}>
+            <Done />
+          </IconButton>
+        </>
+      ) : (
+        <>
+          {" "}
+          <Typography variant="h4">{Groupname}</Typography>
+          <IconButton onClick={() => setisedit(true)}>
+            <Edit />
+          </IconButton>
+        </>
+      )}
+    </Stack>
+  );
+
+  const buttongroup = (
+    <>
+      <Stack
+        direction={{
+          sm: "row",
+          xs: "column-reverse",
+        }}
+        spacing={"1rem"}
+        p={{
+          sm: "1rem",
+          xs: "0",
+          md: "1rem 4rem",
+        }}
+      >
+        <Button
+          size="large"
+          color="error"
+          variant="outlined"
+          startIcon={<Delete />}
+          onClick={confirmDeleteHandler}
+        >
+          Delete Group
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          startIcon={<Add />}
+          onClick={confirmAddHandler}
+        >
+          Add Member
+        </Button>
+      </Stack>
+    </>
+  );
   return (
     <Grid container height={"100vh"}>
       <Grid
@@ -95,6 +188,35 @@ const Groups = () => {
       >
         {" "}
         {Iconbtns}
+        {Groupname && (
+          <>
+            {groupName}
+            <Typography
+              margin={"2rem"}
+              alignSelf={"flex-start"}
+              variant="body1"
+            >
+              Members
+            </Typography>
+            <Stack
+              maxWidth={"45rem"}
+              boxSizing={"border-box"}
+              width={"100%"}
+              padding={{
+                sm: "1rem",
+                xs: "0",
+                md: "1rem 4rem",
+              }}
+              spacing={"2rem"}
+              bgcolor={"bisque"}
+              height={"50vh"}
+              overflow={"auto"}
+            >
+              {/* members */}
+            </Stack>
+            {buttongroup}
+          </>
+        )}
       </Grid>
       <Drawer
         sx={{
