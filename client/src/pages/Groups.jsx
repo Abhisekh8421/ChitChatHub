@@ -9,12 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import React, { memo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Link } from "../components/styles/StyledComponents";
 import AvatarCard from "../components/shared/AvatarCard";
 import { sampleChats } from "../components/constants/Sampledata";
 
 const Groups = () => {
+  const chatId = useSearchParams()[0].get("group");
   const [IsMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const navigateBack = () => {
@@ -63,6 +64,7 @@ const Groups = () => {
       </Tooltip>
     </>
   );
+  console.log("chat id is ", chatId);
   return (
     <Grid container height={"100vh"}>
       <Grid
@@ -104,7 +106,7 @@ const Groups = () => {
         open={IsMobileMenuOpen}
         onClose={handlemobileclose}
       >
-        <GroupList w={"50vh"} myGroups={sampleChats} />
+        <GroupList w={"50vh"} myGroups={sampleChats} chatId={chatId} />
       </Drawer>
       {/* //when true the dialog will open then onclose it will shut down */}
     </Grid>
@@ -112,7 +114,7 @@ const Groups = () => {
 };
 
 const GroupList = ({ chatId, w = "100%", myGroups = [] }) => (
-  <Stack>
+  <Stack width={w}>
     {myGroups.length > 0 ? (
       myGroups.map((group) => (
         <GroupListItem chatId={chatId} group={group} key={group._id} />
@@ -124,9 +126,6 @@ const GroupList = ({ chatId, w = "100%", myGroups = [] }) => (
     )}
   </Stack>
 );
-
-
-
 
 const GroupListItem = memo(({ group, chatId }) => {
   const { name, avatar, _id } = group;
