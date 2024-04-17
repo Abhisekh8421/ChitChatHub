@@ -16,12 +16,21 @@ import {
   Typography,
   TextField,
   Button,
+  Backdrop,
 } from "@mui/material";
-import React, { memo, useEffect, useState } from "react";
+import React, { Suspense, lazy, memo, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Link } from "../components/styles/StyledComponents";
 import AvatarCard from "../components/shared/AvatarCard";
-import { sampleChats } from "../components/constants/Sampledata";
+import { sampleChats, sampleUsers } from "../components/constants/Sampledata";
+import UserItem from "../components/shared/UserItem";
+const ConfirmDeleteDialog = lazy(() =>
+  import("../components/dialogs/ConfirmDeleteDialog")
+);
+const AddMemberDialog = lazy(() =>
+  import("../components/dialogs/AddMemberDialog")
+);
+const isMember = false;
 
 const Groups = () => {
   const chatId = useSearchParams()[0].get("group");
@@ -47,9 +56,13 @@ const Groups = () => {
   const handlemobileclose = () => {
     setIsMobileMenuOpen(false);
   };
+  const removeMemberHandler = (id) => {};
+  const deleteHandler = () => {};
   useEffect(() => {
-    setGroupnameUpdatedValue(`Group Name ${chatId}`);
-    setisGroupname(`GroupName ${chatId}`);
+    if (chatId) {
+      setGroupnameUpdatedValue(`Group Name ${chatId}`);
+      setisGroupname(`GroupName ${chatId}`);
+    }
     return () => {
       setGroupnameUpdatedValue("");
       setisGroupname("");
@@ -211,18 +224,43 @@ const Groups = () => {
                 md: "1rem 4rem",
               }}
               spacing={"2rem"}
-              bgcolor={"bisque"}
               height={"50vh"}
               overflow={"auto"}
             >
-              {/* members */}
+              {sampleUsers.map((user) => (
+                <UserItem
+                  key={user._id}
+                  user={user}
+                  isAdded
+                  styling={{
+                    boxShadow: "0 0 0.5rem rgba(0,0,0,0.2)",
+                    padding: "1rem 2rem",
+                    borderRadius: "0.5rem",
+                  }}
+                  handler={removeMemberHandler}
+                />
+              ))}
             </Stack>
             {buttongroup}
           </>
         )}
       </Grid>
 
-      {confirmDeleteDialog && <>hi</>}
+      {isMember && (
+        <Suspense fallback={<Backdrop open />}>
+          <AddMemberDialog />
+        </Suspense>
+      )}
+
+      {confirmDeleteDialog && (
+        <Suspense fallback={<Backdrop open />}>
+          <ConfirmDeleteDialog
+            open={confirmDeleteDialog}
+            handleClose={closeConfirmDeleteHandler}
+            deleteHandler={deleteHandler}
+          />
+        </Suspense>
+      )}
       <Drawer
         sx={{
           display: {

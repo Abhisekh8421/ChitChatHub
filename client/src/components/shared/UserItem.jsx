@@ -2,7 +2,13 @@ import { Add, Remove } from "@mui/icons-material";
 import { Avatar, IconButton, ListItem, Stack, Typography } from "@mui/material";
 import React from "react";
 
-const UserItem = ({ user, handler, handlerIsLoading, isAdded = false }) => {
+const UserItem = ({
+  user,
+  handler,
+  handlerIsLoading,
+  isAdded = false,
+  styling,
+}) => {
   const { name, _id, avatar } = user;
   return (
     <ListItem>
@@ -11,6 +17,7 @@ const UserItem = ({ user, handler, handlerIsLoading, isAdded = false }) => {
         alignItems={"center"}
         spacing={"1rem"}
         width={"100%"}
+        {...styling}
       >
         <Avatar src={avatar} />
         <Typography
@@ -30,7 +37,7 @@ const UserItem = ({ user, handler, handlerIsLoading, isAdded = false }) => {
             bgcolor: isAdded ? "#FF204E" : "primary.main",
             color: "white",
             "&:hover": {
-              bgcolor:  isAdded ? "#FF204E" : "primary.dark",
+              bgcolor: isAdded ? "#FF204E" : "primary.dark",
             },
           }}
           onClick={() => handler(_id)}
