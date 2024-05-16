@@ -258,7 +258,7 @@ const Groups = () => {
             open={confirmDeleteDialog}
             handleClose={closeConfirmDeleteHandler}
             deleteHandler={deleteHandler}
-            
+
           />
         </Suspense>
       )}
@@ -299,7 +299,8 @@ const GroupListItem = memo(({ group, chatId }) => {
     <Link
       to={`?group=${_id}`}
       onClick={(e) => {
-        if (chatId == _id) e.preventDefault();
+        if (chatId == _id) e.preventDefault(); 
+        // ****important for useless renders once loads then it wont load if click the same member
       }}
     >
       <Stack direction={"row"} spacing={"1rem"} alignItems={"center"}>
