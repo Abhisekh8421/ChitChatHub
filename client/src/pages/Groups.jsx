@@ -260,6 +260,7 @@ const Groups = () => {
             deleteHandler={deleteHandler}
 
           />
+          {/* //when you click no button it sends the handleclose(like in closeConfirmDeleteHandler sets false so it will dissapper or if you click outside then also it sets false and dissapper like in dialog which is in confirmDeleteDialog) */}
         </Suspense>
       )}
       <Drawer
