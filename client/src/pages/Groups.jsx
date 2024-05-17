@@ -56,7 +56,9 @@ const Groups = () => {
   const handlemobileclose = () => {
     setIsMobileMenuOpen(false);
   };
-  const removeMemberHandler = (id) => {};
+  const removeMemberHandler = (id) => {
+    console.log("member is removed", id);
+  };
   const deleteHandler = () => {};
   useEffect(() => {
     if (chatId) {
@@ -184,7 +186,6 @@ const Groups = () => {
             xs: "none",
             sm: "block",
           },
-          bgcolor: "#D74B76",
         }}
       >
         <GroupList myGroups={sampleChats} />
@@ -207,6 +208,7 @@ const Groups = () => {
         {Groupname && (
           <>
             {groupName}
+            {/* groupname is edit group name jsx element */}
             <Typography
               margin={"2rem"}
               alignSelf={"flex-start"}
@@ -258,7 +260,6 @@ const Groups = () => {
             open={confirmDeleteDialog}
             handleClose={closeConfirmDeleteHandler}
             deleteHandler={deleteHandler}
-
           />
           {/* //when you click no button it sends the handleclose(like in closeConfirmDeleteHandler sets false so it will dissapper or if you click outside then also it sets false and dissapper like in dialog which is in confirmDeleteDialog) */}
         </Suspense>
@@ -281,7 +282,14 @@ const Groups = () => {
 };
 
 const GroupList = ({ chatId, w = "100%", myGroups = [] }) => (
-  <Stack width={w}>
+  <Stack
+    width={w}
+    sx={{
+      bgcolor: "#D74B76",
+      height: "100vh",
+      overflow: "auto",
+    }}
+  >
     {myGroups.length > 0 ? (
       myGroups.map((group) => (
         <GroupListItem chatId={chatId} group={group} key={group._id} />
@@ -300,7 +308,7 @@ const GroupListItem = memo(({ group, chatId }) => {
     <Link
       to={`?group=${_id}`}
       onClick={(e) => {
-        if (chatId == _id) e.preventDefault(); 
+        if (chatId == _id) e.preventDefault();
         // ****important for useless renders once loads then it wont load if click the same member
       }}
     >
