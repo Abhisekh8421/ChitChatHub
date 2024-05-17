@@ -4,11 +4,6 @@ import { sampleUsers } from "../constants/Sampledata";
 import UserItem from "../shared/UserItem";
 
 const AddMemberDialog = ({ chatId, addMember, isLoadingAddMember }) => {
-  const addmemberSubmitHandler = () => {};
-  const closeHandler = () => {
-    setmembers([]);
-    setSelectedmembers([]);
-  };
   const [members, setmembers] = useState(sampleUsers);
   const [Selectedmembers, setSelectedmembers] = useState([]);
   const selectMemberHandler = (id) => {
@@ -17,6 +12,14 @@ const AddMemberDialog = ({ chatId, addMember, isLoadingAddMember }) => {
         ? prev.filter((current) => current !== id)
         : [...prev, id]
     );
+  };
+
+  const closeHandler = () => {
+    setmembers([]);
+    setSelectedmembers([]);
+  };
+  const addmemberSubmitHandler = () => {
+    closeHandler();
   };
   return (
     <Dialog open onClose={closeHandler}>
