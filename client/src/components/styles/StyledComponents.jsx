@@ -31,3 +31,27 @@ export const InputBox = styled("input")`
   borderradius: 1.5rem;
   backgroundcolor: grey;
 `;
+export const CurveButton = styled("button")`
+  border-radius: 1.5rem;
+  padding: 1rem 2rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: "#28282B";
+  background-color: "#28282B";
+  font-size: 1.1rem;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+  }
+`;
+
+export const SearchField = styled("input")`
+  padding: 1rem 2rem;
+  width: 20vmax;
+  border: 1px solid black;
+  outline: none;
+  border-radius: 1.5rem;
+  background-color: "#28282B";
+  font-size: 1.1rem;
+`;
