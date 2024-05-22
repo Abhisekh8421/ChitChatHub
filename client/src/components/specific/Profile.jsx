@@ -9,7 +9,12 @@ import moment from "moment";
 
 const Profile = () => {
   return (
-    <Stack direction={"column"} spacing={"2rem"} alignItems={"center"}>
+    <Stack
+      direction={"column"}
+      spacing={"2rem"}
+      alignItems={"center"}
+      height={"100vh"}
+    >
       <Avatar
         sx={{
           width: 200,
