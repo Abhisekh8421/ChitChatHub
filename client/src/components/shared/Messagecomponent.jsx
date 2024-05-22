@@ -46,7 +46,7 @@ const Messagecomponent = ({ message, user }) => {
                   color: "black",
                 }}
               >
-                {RenderAttachment(file, url)}
+                <RenderAttachment file={file} url={url} />
               </a>
             </Box>
           );

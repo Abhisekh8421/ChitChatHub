@@ -13,9 +13,11 @@ const RenderAttachment = ({ file, url }) => {
           src={TransformImage(url, 200)}
           alt="attachment"
           width={"200px"}
-          height={"150px"}
+          height={"180px"}
           style={{
             objectFit: "contain",
+            marginTop: "0.5rem",
+            alignItems: "center",
           }}
         />
       );

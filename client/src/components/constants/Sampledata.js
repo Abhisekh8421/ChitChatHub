@@ -152,13 +152,15 @@ export const dashboardData = {
 
   chats: [
     {
-      name: "LabadBass Group",
+      name: "10th Group",
       avatar: ["https://www.w3schools.com/howto/img_avatar.png"],
       _id: "1",
       groupChat: false,
       members: [
         { _id: "1", avatar: "https://www.w3schools.com/howto/img_avatar.png" },
         { _id: "2", avatar: "https://www.w3schools.com/howto/img_avatar.png" },
+        { _id: "3", avatar: "https://www.w3schools.com/howto/img_avatar.png" },
+        { _id: "4", avatar: "https://www.w3schools.com/howto/img_avatar.png" },
       ],
       totalMembers: 2,
       totalMessages: 20,
@@ -168,7 +170,7 @@ export const dashboardData = {
       },
     },
     {
-      name: "L*Da Luston Group",
+      name: "Btech Group",
       avatar: ["https://www.w3schools.com/howto/img_avatar.png"],
       _id: "2",
       groupChat: true,
