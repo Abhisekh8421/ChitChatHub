@@ -3,8 +3,16 @@ import userRouter from "./routes/user.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
+import { connectDb } from "./database/db.js";
+dotenv.config({
+  path: "./.env",
+});
 
 const app = express();
+
+//Database connection
+
+connectDb();
 
 //must be included before routes
 app.use(express.json());
