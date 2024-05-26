@@ -6,8 +6,8 @@ const cookieoptions = {
   httpOnly: true,
   secure: true,
 };
-export const token = async (res, user, statuscode, message) => {
-  const accessToken = await jwt.sign(
+export const sendToken = (res, user, statuscode, message) => {
+  const accessToken = jwt.sign(
     { _id: user._id },
     process.env.ACCESSTOKENSECRET
   );
