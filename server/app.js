@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./routes/user.js";
+import chatRouter from "./routes/chat.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -20,7 +21,9 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
+//routes
 app.use("/user", userRouter);
+app.use("/chat", chatRouter);
 
 app.get("/", (req, res) => {
   res.send("hello");

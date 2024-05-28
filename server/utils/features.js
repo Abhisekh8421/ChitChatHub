@@ -61,4 +61,6 @@ class ApiResponse {
   }
 }
 
-export { ApiError, asyncHandler, ApiResponse };
+const emitEvent = (req, event, users, data) => {};
+
+export { ApiError, asyncHandler, ApiResponse, emitEvent };

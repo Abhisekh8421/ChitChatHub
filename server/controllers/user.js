@@ -35,7 +35,7 @@ const getMyProfile = asyncHandler(async (req, res) => {
   );
 });
 
- const LogoutUser = asyncHandler(async (req, res) => {
+const LogoutUser = asyncHandler(async (req, res) => {
   const cookieoptions = {
     maxAge: 15 * 24 * 60 * 60 * 1000,
     sameSite: "none",
@@ -51,4 +51,9 @@ const getMyProfile = asyncHandler(async (req, res) => {
     });
 });
 
-export { login, newUser, getMyProfile, LogoutUser };
+const SearchUser = asyncHandler(async (req, res) => {
+  const { name } = req.query;
+  
+});
+
+export { login, newUser, getMyProfile, LogoutUser, SearchUser };
