@@ -6,5 +6,5 @@ export const connectDb = async () => {
       dbName: process.env.MONGODB_NAME,
     })
     .then(() => console.log("DATABASE CONNECTED"))
-    .catch((e) => console.log("database connectionfailed", e.message));
+    .catch((e) => console.log("database connection failed", e.message));
 };

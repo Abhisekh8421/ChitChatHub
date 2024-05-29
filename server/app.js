@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { connectDb } from "./database/db.js";
+import createUser from "./seeders/user.js";
 dotenv.config({
   path: "./.env",
 });
@@ -14,6 +15,7 @@ const app = express();
 //Database connection
 
 connectDb();
+// createUser(15); for example purpose fake data
 
 //must be included before routes
 app.use(express.json());
