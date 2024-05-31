@@ -69,6 +69,7 @@ export const getMygroups = asyncHandler(async (req, res) => {
     _id,
     members,
     name,
+    groupChat,
     avatar: members.slice(0, 3).map(({ avatar }) => avatar.url),
   }));
   return res.json({
@@ -79,6 +80,9 @@ export const getMygroups = asyncHandler(async (req, res) => {
 
 export const addMembers = asyncHandler(async (req, res) => {
   const { chatId, members } = req.body;
+  if (!members || members.length < 1) {
+    throw new ApiError(400, "Please Provide Members ");
+  }
   const chat = await Chat.findById(chatId);
   if (!chat) {
     throw new ApiError(404, "Chat Not Found");
@@ -87,7 +91,7 @@ export const addMembers = asyncHandler(async (req, res) => {
     throw new ApiError(400, "This is Not a Group Chat");
   }
   if (chat.creator.toString() !== req.user.toString()) {
-    throw new ApiError(403, "You are not allowed to add a members");
+    throw new ApiError(403, "You are not allowed to add a members"); //It verifies if the user making the request is the creator of the chat group
   }
 
   const AllNewmembersPromise = members.map((member) =>
@@ -96,7 +100,11 @@ export const addMembers = asyncHandler(async (req, res) => {
 
   const Allmembers = Promise.all(AllNewmembersPromise);
 
-  chat.members.push(...(await Allmembers).map((member) => member._id));
+  const uniqueMembers = Allmembers.filter(
+    (i) => !chat.members.includes(i._id.toString())
+  ).map((i) => i._id); //this filter step creates a new array containing only those members from allmembers whose _id is not already present in chat.members
+
+  chat.members.push(...uniqueMembers);
   if (chat.members.length > 50) {
     throw new ApiError(400, "Groups Limit Reached");
   }
@@ -115,5 +123,45 @@ export const addMembers = asyncHandler(async (req, res) => {
   return res.json({
     success: true,
     AllUsersNames,
+  });
+});
+
+export const removeMembers = asyncHandler(async (req, res) => {
+  const { chatId, userId } = req.body;
+  const [chat, userThatwillBeRemoved] = await Promise.all([
+    Chat.findById(chatId),
+    User.findById(userId, "name"),
+  ]);
+
+  if (!chat) {
+    throw new ApiError(404, "Chat Not Found");
+  }
+  if (!chat.groupChat) {
+    throw new ApiError(400, "This is Not a Group Chat");
+  }
+  if (chat.creator.toString() !== req.user.toString()) {
+    throw new ApiError(403, "You are not allowed to add a members"); //It verifies if the user making the request is the creator of the chat group
+  }
+
+  if (chat.members.lenght <= 3) {
+    throw new ApiError(400, "Group Must have Atleast 3 members");
+  }
+
+  chat.members = chat.members.filter(
+    (member) => member.toString() !== userId.toString()
+  );
+  await chat.save();
+
+  emitEvent(
+    req,
+    ALERT,
+    chat.members,
+    `${userThatwillBeRemoved} has been removed from the group`
+  );
+
+  emitEvent(req, REFETCH_CHATS, chat.members);
+  return res.status(200).json({
+    success: true,
+    message: "member removed successfully",
   });
 });
