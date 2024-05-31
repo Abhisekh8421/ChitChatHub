@@ -179,7 +179,7 @@ export const leaveGroup = asyncHandler(async (req, res) => {
   );
 
   if (remainingMembers.length < 3)
-    return next(new ErrorHandler("Group must have at least 3 members", 400));
+    throw new ApiError(400, "Group Must have  at least 3 members");
 
   if (chat.creator.toString() === req.user.toString()) {
     const randomElement = Math.floor(Math.random() * remainingMembers.length);
