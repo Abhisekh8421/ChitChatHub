@@ -1,8 +1,19 @@
-import { ApiError, asyncHandler, emitEvent } from "../utils/features.js";
-import { ALERT, REFETCH_CHATS } from "../constants/events.js";
+import {
+  ApiError,
+  asyncHandler,
+  emitEvent,
+  uploadFilesToCloudinary,
+} from "../utils/features.js";
+import {
+  ALERT,
+  NEW_MESSAGE,
+  NEW_MESSAGE_ALERT,
+  REFETCH_CHATS,
+} from "../constants/events.js";
 import Chat from "../models/chat.js";
 import { getOtherMember } from "../lib/helper.js";
 import User from "../models/user.js";
+import Message from "../models/message.js";
 
 export const newGroupChat = asyncHandler(async (req, res) => {
   const { name, members } = req.body;
@@ -189,7 +200,7 @@ export const leaveGroup = asyncHandler(async (req, res) => {
   chat.members = remainingMembers;
   const [user] = await Promise.all([
     User.findById(req.user, "name"),
-    chat.save(),
+    await chat.save(),
   ]);
 
   emitEvent(req, ALERT, chat.members, {
@@ -202,3 +213,52 @@ export const leaveGroup = asyncHandler(async (req, res) => {
     message: "Leave Group Successfully",
   });
 });
+
+export const sendAttachments = asyncHandler(async (req, res) => {
+  const { chatId } = req.body;
+  const [chat, user] = await Promise.all([
+    Chat.findById(chatId),
+    User.findById(req.user, "name"),
+  ]);
+  if (!chat) {
+    throw new ApiError(404, "Chat Not Found");
+  }
+  const files = req.files || [];
+  if (files.length < 1)
+    throw new ApiError(400, "please provide atleast one Attachment");
+
+  const attachments = await uploadFilesToCloudinary(files);
+
+  const messageForDB = {
+    content: "",
+    attachments,
+    sender: user._id,
+    chat: chatId,
+  };
+
+  const messageForRealTime = {
+    ...messageForDB,
+    sender: {
+      _id: user._id,
+      name: user.name,
+    },
+  };
+
+  const message = await Message.create(messageForDB);
+  emitEvent(req, NEW_MESSAGE, chat.members, {
+    message: messageForRealTime,
+    chatId,
+  });
+
+  emitEvent(req, NEW_MESSAGE_ALERT, chat.members, { chatId });
+
+  return res.status(200).json({
+    success: true,
+    message,
+  });
+});
+
+
+export const getChatDetails=asyncHandler(async(req,res)=>{
+  
+})
