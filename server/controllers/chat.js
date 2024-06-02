@@ -258,7 +258,62 @@ export const sendAttachments = asyncHandler(async (req, res) => {
   });
 });
 
+export const getChatDetails = asyncHandler(async (req, res) => {
+  if (req.query.populate === "true") {
+    const chat = await Chat.findById(req.params.id)
+      .populate("members", "name avatar")
+      .lean(); // making the operation faster and more efficient
+    if (!chat) throw new ApiError(404, "Chat Not found");
+    chat.members = chat.members.map(({ _id, name, avatar }) => ({
+      _id,
+      name,
+      avatar: avatar.url,
+    })); // it modifies the members field of the chat by mapping over each member and extracting their _id, name, and the url of their avatar.
+    await chat.save();
 
-export const getChatDetails=asyncHandler(async(req,res)=>{
-  
-})
+    return res.status(200).json({
+      success: true,
+      chat,
+    });
+  } else {
+    const chat = await Chat.findById(req.params.id).populate(
+      "members",
+      "name avatar"
+    );
+    if (!chat) throw new ApiError(404, "Chat Not Found");
+    return res.status(200).json({
+      success: true,
+      chat,
+    });
+  }
+});
+
+export const renameGroup = asyncHandler(async (req, res) => {
+  const chatId = req.params.id;
+  const { name } = req.body;
+  const chat = await Chat.findById(chatId);
+  if (!chat) throw new ApiError(404, "Chat is Not Found");
+  if (!chat.groupChat) throw new ApiError(400, "This is Not my Group Chat");
+  if (chat.creator.toString() != req.user.toString()) {
+    throw new ApiError(403, "You are Not allowed to Rename the Group");
+  }
+  chat.name = name;
+  await chat.save();
+  emitEvent(req, REFETCH_CHATS, chat.members);
+  return res.status(200).json({
+    success: true,
+    chat,
+  });
+});
+
+export const deleteChat = asyncHandler(async (req, res) => {
+  const chatId = req.params.id;
+  const chat = await Chat.findById(chatId);
+  if (!chat) throw new ApiError(404, "Chat Not found");
+  if (chat.groupChat && chat.creator.toString() !== req.user.toString()) {
+    throw new ApiError(400, "You are Not allowed to Delete This Chat");
+  }
+  if (!chat.groupChat && !chat.members.includes(req.user.toString())) {
+    throw new ApiError(400, "You are Not allowed to delete the chat");
+  }
+});
