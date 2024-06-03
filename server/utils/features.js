@@ -96,4 +96,8 @@ export const uploadFilesToCloudinary = async (files = []) => {
   }
 };
 
+const deletFilesFromCloudinary = async (public_ids) => {
+  // Delete files from cloudinary
+};
+
 export { ApiError, asyncHandler, ApiResponse, emitEvent };

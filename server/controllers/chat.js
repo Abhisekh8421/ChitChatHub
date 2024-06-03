@@ -14,6 +14,7 @@ import Chat from "../models/chat.js";
 import { getOtherMember } from "../lib/helper.js";
 import User from "../models/user.js";
 import Message from "../models/message.js";
+import deletFilesFromCloudinary from "../utils/features.js";
 
 export const newGroupChat = asyncHandler(async (req, res) => {
   const { name, members } = req.body;
@@ -316,4 +317,67 @@ export const deleteChat = asyncHandler(async (req, res) => {
   if (!chat.groupChat && !chat.members.includes(req.user.toString())) {
     throw new ApiError(400, "You are Not allowed to delete the chat");
   }
+  const members = chat.members;
+
+  //here we have to delete all the messages and attachments from the cloudinary
+
+  const MessagewithAttachments = await Message.find({
+    chat: chatId,
+    attachments: { $exists: true, $ne: [] },
+  });
+  //$exists: true: Ensures that the message has the attachments field. Without this, messages without the attachments field would not be excluded.
+  //$ne: []: This means the field should have some elements if it exists.
+  //$exists: true: Ensures the attachments field is present.
+  //$ne: []: Ensures the attachments field is not an empty array.
+
+  const public_ids = [];
+  MessagewithAttachments.forEach(({ attachments }) => {
+    attachments.forEach(({ public_id }) => public_ids.push(public_id));
+  });
+
+  await Promise.all([
+    //delete files from cloudinary
+    deletFilesFromCloudinary(public_ids),
+    Message.deleteMany({ chat: chatId }),
+    chat.deleteOne(),
+  ]);
+
+  emitEvent(req, REFETCH_CHATS, members);
+
+  return res.status(200).json({
+    success: true,
+    message: "Chat deleted successfully",
+  });
+});
+
+export const getMessages = asyncHandler(async (req, res) => {
+  const chatId = req.params.id;
+  const { page = 1 } = req.query;
+
+  const resultPerPage = 20;
+  const skip = (page - 1) * resultPerPage;
+
+  const chat = await Chat.findById(chatId);
+  if (!chat) throw new ApiError(400, "Chat not found");
+
+  if (!chat.members.includes(req.user.toString())) {
+    throw new ApiError(403, "you are not allowed to access this chat");
+  }
+  const [messages, totalMessagesCount] = await Promise.all([
+    Message.find({ chat: chatId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(resultPerPage)
+      .populate("sender", "name")
+      .lean(),
+    Message.countDocuments({ chat: chatId }),
+  ]);
+
+  const totalPages = Math.ceil(totalMessagesCount / resultPerPage) || 0;
+
+  return res.status(200).json({
+    success: true,
+    messages: messages.reverse(),
+    totalPages,
+  });
 });
