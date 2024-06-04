@@ -14,7 +14,7 @@ import Chat from "../models/chat.js";
 import { getOtherMember } from "../lib/helper.js";
 import User from "../models/user.js";
 import Message from "../models/message.js";
-import deletFilesFromCloudinary from "../utils/features.js";
+// import {deletFilesFromCloudinary} from "../utils/features.js";  for later use
 
 export const newGroupChat = asyncHandler(async (req, res) => {
   const { name, members } = req.body;
@@ -365,7 +365,7 @@ export const getMessages = asyncHandler(async (req, res) => {
   }
   const [messages, totalMessagesCount] = await Promise.all([
     Message.find({ chat: chatId })
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1 }) 
       .skip(skip)
       .limit(resultPerPage)
       .populate("sender", "name")

@@ -6,6 +6,11 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { connectDb } from "./database/db.js";
 import createUser from "./seeders/user.js";
+import {
+  createGroupChats,
+  createMessagesInAChat,
+  createSingleChats,
+} from "./seeders/chat.js";
 dotenv.config({
   path: "./.env",
 });
@@ -16,6 +21,10 @@ const app = express();
 
 connectDb();
 // createUser(15); for example purpose fake data
+// createSingleChats(10);
+// createGroupChats(10); for sample purpose
+
+// createMessagesInAChat("665f3fb69170eaeb93d2999e",50);
 
 //must be included before routes
 app.use(express.json());

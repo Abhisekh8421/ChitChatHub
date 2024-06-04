@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { getBase64 } from "../lib/helper";
+import { getBase64 } from "../lib/helper.js";
 import { v4 as uuid } from "uuid";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -66,7 +66,7 @@ class ApiResponse {
 
 const emitEvent = (req, event, users, data) => {};
 
-export const uploadFilesToCloudinary = async (files = []) => {
+export  const uploadFilesToCloudinary = async (files = []) => {
   const uploadPromises = files.map((file) => {
     return new Promise((resolve, reject) => {
       cloudinary.uploader.upload(
