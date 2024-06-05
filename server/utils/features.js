@@ -66,7 +66,7 @@ class ApiResponse {
 
 const emitEvent = (req, event, users, data) => {};
 
-export  const uploadFilesToCloudinary = async (files = []) => {
+export const uploadFilesToCloudinary = async (files = []) => {
   const uploadPromises = files.map((file) => {
     return new Promise((resolve, reject) => {
       cloudinary.uploader.upload(
@@ -100,4 +100,13 @@ const deletFilesFromCloudinary = async (public_ids) => {
   // Delete files from cloudinary
 };
 
-export { ApiError, asyncHandler, ApiResponse, emitEvent };
+class ErrorHandler extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+export { ErrorHandler };
+
+export { ApiError, asyncHandler, ApiResponse, emitEvent, ErrorHandler };
