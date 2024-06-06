@@ -17,7 +17,9 @@ export const registerValidator = () => [
   body("username", "Please Enter Username").notEmpty(),
   body("bio", "Please Enter Bio").notEmpty(),
   body("password", "Please Enter Password").notEmpty(),
-];
+];   
+
+
 
 export const loginValidator = () => [
   body("username", "Please Enter Username").notEmpty(),
