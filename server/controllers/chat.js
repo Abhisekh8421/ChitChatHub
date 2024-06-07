@@ -178,6 +178,10 @@ export const removeMembers = asyncHandler(async (req, res) => {
   });
 });
 
+
+
+
+
 export const leaveGroup = asyncHandler(async (req, res) => {
   const chatId = req.params.id;
   const chat = await Chat.findById(chatId);
@@ -214,6 +218,9 @@ export const leaveGroup = asyncHandler(async (req, res) => {
     message: "Leave Group Successfully",
   });
 });
+
+
+
 
 export const sendAttachments = asyncHandler(async (req, res) => {
   const { chatId } = req.body;
@@ -258,6 +265,8 @@ export const sendAttachments = asyncHandler(async (req, res) => {
     message,
   });
 });
+
+
 
 export const getChatDetails = asyncHandler(async (req, res) => {
   if (req.query.populate === "true") {
