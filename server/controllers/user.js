@@ -58,4 +58,9 @@ const SearchUser = asyncHandler(async (req, res) => {
   
 });
 
+
+
+
+
+
 export { login, newUser, getMyProfile, LogoutUser, SearchUser };
