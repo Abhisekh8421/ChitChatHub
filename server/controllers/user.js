@@ -21,8 +21,6 @@ const login = asyncHandler(async (req, res) => {
   sendToken(res, user, 200, `${user.name} Welcome Back`);
 });
 
-
-
 const getMyProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user);
   return res.status(200).json(
@@ -55,12 +53,11 @@ const LogoutUser = asyncHandler(async (req, res) => {
 
 const SearchUser = asyncHandler(async (req, res) => {
   const { name } = req.query;
-  
+
+  return res.status(200).json({
+    success: true,
+    message: `hello ${name}`,
+  });
 });
-
-
-
-
-
 
 export { login, newUser, getMyProfile, LogoutUser, SearchUser };
