@@ -48,6 +48,7 @@ export const removeMemberValidator = () => [
   body("userId", "Please Enter User ID").notEmpty(),
 ];
 
+
 export const sendAttachmentsValidator = () => [
   body("chatId", "Please Enter Chat ID").notEmpty(),
 ];
